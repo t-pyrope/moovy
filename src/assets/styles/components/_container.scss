@@ -1,0 +1,15 @@
+.container {
+    &_flex {
+        display: flex;
+        gap: 1rem;
+
+        &_column {
+            flex-direction: column;
+            gap: 0.5rem;
+
+            &_center {
+                align-items: center;
+            }
+        }
+    }
+}

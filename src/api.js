@@ -1,4 +1,4 @@
-const baseUrl = `http://www.omdbapi.com/`
+const baseUrl = `https://www.omdbapi.com/`
  
 export const titleSearchURL = (title, page = 1) => `${baseUrl}?apikey=${process.env.REACT_APP_API_KEY}&s=${title}&page=${page}/`
 

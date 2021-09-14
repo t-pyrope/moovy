@@ -18,7 +18,7 @@ const SearchComponent = ({ extended = false, page = 1 }) => {
 
     useEffect(() => {
         if (title && extended) setTitleValue(title);
-    }, [])
+    }, [title, extended, setTitleValue])
 
     const onChange = (e) => {
         const inputName = e.target.name;

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { ImageList, ImageListItem, ImageListItemBar } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
-import noPoster from '../assets/img/no-poster.png';
-import SearchComponent from '../components/SearchComponent';
 import { fetchTitleSearch, fetchYearSearch, fetchBothSearch } from '../actions/searchAction';
+
+import { ImageList } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
+
+import SearchComponent from '../components/SearchComponent';
+import Card from '../components/Card';
 
 const SearchPage = () => {
     const [page, setPage] = useState(1);
@@ -52,21 +55,15 @@ const SearchPage = () => {
                         onChange={onPaginationChange}
                         size="large"
                     />
-                    <ImageList gap={20}>
+                    <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
                         {searchedMovies.length ? searchedMovies.map(m =>
-                                    <ImageListItem
+                                    <Card
                                         key={m.imdbID}
-                                        style={{ width: "250px", height: "360px" }}
-                                        onClick={() => onClick(m.imdbID)}
-                                    >
-                                        <img
-                                            src={m.Poster === "N/A" ? noPoster : m.Poster}
-                                            alt={m.Title}
-                                        />
-                                        <ImageListItemBar title={m.Title}>
-
-                                        </ImageListItemBar>
-                                    </ImageListItem>
+                                        id={m.imdbID}
+                                        title={m.Title}
+                                        poster={m.Poster}
+                                        onClick={onClick}
+                                    />
                                 ) : ''}
                     </ImageList>
                     <Pagination

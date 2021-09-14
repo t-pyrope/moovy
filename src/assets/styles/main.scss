@@ -39,3 +39,7 @@ h1 > a {
 .MuiImageListItem-item {
     cursor: pointer;
 }
+
+.MuiImageListItem-item .MuiRating-iconEmpty {
+    color: white;
+}

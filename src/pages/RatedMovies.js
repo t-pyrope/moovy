@@ -6,6 +6,8 @@ import fetchDetail from '../actions/detailAction';
 import { ImageList, ImageListItem, ImageListItemBar } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 
+import noPoster from '../assets/img/no-poster.png';
+
 const RatedMovies = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
@@ -51,7 +53,10 @@ const RatedMovies = () => {
                                         style={{ width: "250px", height: "360px" }}
                                         onClick={() => onClick(m.id)}
                                     >
-                                        <img src={m.posterUrl} alt={m.title} />
+                                        <img
+                                            src={m.posterUrl === "N/A" ? noPoster : m.posterUrl}
+                                            alt={m.title}
+                                        />
                                         <ImageListItemBar title={m.title}>
 
                                         </ImageListItemBar>

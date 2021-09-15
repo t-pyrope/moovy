@@ -7,13 +7,15 @@ import { fetchTitleSearch, fetchYearSearch, fetchBothSearch } from '../actions/s
 import { ImageList } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 
-import SearchComponent from '../components/SearchComponent';
 import Card from '../components/Card';
 
 const SearchPage = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
-    const { searchedMovies, title, year, searchBy, length } = useSelector(state => state.search);
+    const {
+        searchedMovies, title, year,
+        searchBy, length, initial
+    } = useSelector(state => state.search);
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -46,33 +48,35 @@ const SearchPage = () => {
 
     return (
         <>
-            { searchedMovies?.length ?
-                <div className="container_flex container_flex_column container_flex_column_center">
-                    <SearchComponent extended={true} page={page} />
-                    <Pagination
-                        count={count}
-                        page={page}
-                        onChange={onPaginationChange}
-                        size="large"
-                    />
-                    <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
-                        {searchedMovies.length ? searchedMovies.map(m =>
-                                    <Card
-                                        key={m.imdbID}
-                                        id={m.imdbID}
-                                        title={m.Title}
-                                        poster={m.Poster}
-                                        onClick={onClick}
-                                    />
-                                ) : ''}
-                    </ImageList>
-                    <Pagination
-                        count={count}
-                        page={page}
-                        onChange={onPaginationChange}
-                        size="large"
-                    />
-                </div> : 'Nothing to display. Try to search something!'
+            { initial ? 'Nothing to display. Try to search something!'
+                : <div className="container_flex container_flex_column container_flex_column_center"> 
+                    { searchedMovies?.length ?
+                        <>
+                            <Pagination
+                                count={count}
+                                page={page}
+                                onChange={onPaginationChange}
+                                size="large"
+                            />
+                            <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
+                                {searchedMovies.length ? searchedMovies.map(m =>
+                                            <Card
+                                                key={m.imdbID}
+                                                id={m.imdbID}
+                                                title={m.Title}
+                                                poster={m.Poster}
+                                                onClick={onClick}
+                                            />
+                                        ) : ''}
+                            </ImageList>
+                            <Pagination
+                                count={count}
+                                page={page}
+                                onChange={onPaginationChange}
+                                size="large"
+                            /></> : "Couldn't find anything"
+                    }
+                </div>
             }
         </>
     )

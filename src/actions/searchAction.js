@@ -8,7 +8,7 @@ export const fetchTitleSearch = (title, page) => async (dispatch) => {
                 type: 'FETCH_SEARCH_TITLE',
                 payload: {
                     searchedMovies: res.data.Search,
-                    title,
+                    title, page,
                     searchBy: 'searchByTitle',
                     length: res.data.totalResults,
                 }
@@ -23,7 +23,7 @@ export const fetchYearSearch = (year, page) => async (dispatch) => {
                 type: "FETCH_SEARCH_YEAR",
                 payload: {
                     searchedMovies: res.data.Search,
-                    year,
+                    year, page,
                     searchBy: 'searchByYear',
                     length: res.data.totalResults,
                 }
@@ -38,7 +38,7 @@ export const fetchBothSearch = (title, year, page) => async(dispatch) => {
                 type: "FETCH_SEARCH_BOTH",
                 payload: {
                     searchedMovies: res.data.Search,
-                    title, year,
+                    title, year, page,
                     searchBy: 'searchByBoth',
                     length: res.data.totalResults,
                 }

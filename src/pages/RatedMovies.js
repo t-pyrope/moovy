@@ -7,15 +7,17 @@ import { ImageList } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 
 import Card from '../components/Card';
+import FilterPanel from '../components/FilterPanel';
 
 const RatedMovies = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [displayMovies, setDisplayMovies] = useState([]);
-    const { ratedMovies } = useSelector(state => state.rated);
+    const { ratedMovies, genres } = useSelector(state => state.rated);
     const limit = 10;
     const history = useHistory();
     const dispatch = useDispatch();
+    console.log(genres);
 
     useEffect(() => {
         setCount(Math.ceil(ratedMovies?.length / limit))
@@ -40,6 +42,7 @@ const RatedMovies = () => {
             <h2>Rated by me</h2>
             {ratedMovies?.length ?
                 <div className="container_flex container_flex_column container_flex_column_center">
+                    <FilterPanel genres={genres} />
                     <Pagination
                         count={count}
                         page={page}

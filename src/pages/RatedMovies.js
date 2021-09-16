@@ -3,10 +3,10 @@ import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import fetchDetail from '../actions/detailAction';
 
-import { ImageList, ImageListItem, ImageListItemBar } from '@material-ui/core';
+import { ImageList } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 
-import noPoster from '../assets/img/no-poster.png';
+import Card from '../components/Card';
 
 const RatedMovies = () => {
     const [page, setPage] = useState(1);
@@ -46,22 +46,16 @@ const RatedMovies = () => {
                         onChange={onPaginationChange}
                         size="large"
                     />
-                    <ImageList gap={20}>
+                    <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
                         {displayMovies.length ? displayMovies.map(m =>
-                                    <ImageListItem
-                                        key={m.id}
-                                        style={{ width: "250px", height: "360px" }}
-                                        onClick={() => onClick(m.id)}
-                                    >
-                                        <img
-                                            src={m.posterUrl === "N/A" ? noPoster : m.posterUrl}
-                                            alt={m.title}
-                                        />
-                                        <ImageListItemBar title={m.title}>
-
-                                        </ImageListItemBar>
-                                    </ImageListItem>
-                                ) : ''}
+                                <Card
+                                    key={m.id}
+                                    id={m.id}
+                                    title={m.title}
+                                    poster={m.posterUrl}
+                                    onClick={onClick}
+                                />
+                            ) : ''}
                     </ImageList>
                 </div>
             : <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p> }

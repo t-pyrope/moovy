@@ -12,7 +12,6 @@ const Card = ({ poster, title, onClick, id }) => {
     const [myRating, setMyRating] = useState(0);
     const { ratedMovies } = useSelector(state => state.rated);
     const dispatch = useDispatch();
-    console.log(id);
 
     useEffect(() => {
         const myRatingMovie = ratedMovies.find(m => m.id === id);
@@ -22,7 +21,6 @@ const Card = ({ poster, title, onClick, id }) => {
     }, [ratedMovies, id])
 
     const onChange = (e) => {
-        console.log(id);
         dispatch(addRating(id, +e.target.value, poster, title))
     }
 

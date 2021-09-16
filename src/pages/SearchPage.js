@@ -60,14 +60,14 @@ const SearchPage = () => {
                             />
                             <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
                                 {searchedMovies.length ? searchedMovies.map(m =>
-                                            <Card
-                                                key={m.imdbID}
-                                                id={m.imdbID}
-                                                title={m.Title}
-                                                poster={m.Poster}
-                                                onClick={onClick}
-                                            />
-                                        ) : ''}
+                                        <Card
+                                            key={m.imdbID}
+                                            id={m.imdbID}
+                                            title={m.Title}
+                                            poster={m.Poster}
+                                            onClick={onClick}
+                                        />
+                                    ) : ''}
                             </ImageList>
                             <Pagination
                                 count={count}

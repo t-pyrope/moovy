@@ -17,7 +17,9 @@ const RatedMovies = () => {
     const limit = 10;
     const history = useHistory();
     const dispatch = useDispatch();
-    console.log(genres);
+    console.log(ratedMovies);
+    // for filter panel
+    const [activeGenres, setActiveGenres] = useState([]);
 
     useEffect(() => {
         setCount(Math.ceil(ratedMovies?.length / limit))
@@ -28,6 +30,19 @@ const RatedMovies = () => {
         setDisplayMovies(movies);
     }, [page, ratedMovies]);
 
+    useEffect(() => {
+        let movies = ratedMovies
+            .filter(m => {
+                let ok = true;
+                for (let value of activeGenres) {
+                    if (!m.genres.includes(value)) ok = false;
+                }
+                return ok;
+            })
+            .slice((page - 1) * limit, page * limit);
+        setDisplayMovies(movies);
+    }, [activeGenres, page, ratedMovies])
+
     const onClick = id => {
         dispatch(fetchDetail(id));
         history.push(`/movie/${id}`);
@@ -36,13 +51,25 @@ const RatedMovies = () => {
     const onPaginationChange = (e, p) => {
         setPage(p);
     }
+
+    const onChipClick = (genre) => {
+        let set = new Set(activeGenres);
+        console.log("set before", set);
+        set.has(genre) ? set.delete(genre) : set.add(genre);
+        console.log("set after", set);
+        setActiveGenres(Array.from(set));
+    }
     
     return(
         <>
             <h2>Rated by me</h2>
             {ratedMovies?.length ?
                 <div className="container_flex container_flex_column container_flex_column_center">
-                    <FilterPanel genres={genres} />
+                    <FilterPanel
+                        genres={genres}
+                        activeGenres={activeGenres}
+                        onChipClick={onChipClick}
+                    />
                     <Pagination
                         count={count}
                         page={page}
@@ -60,6 +87,12 @@ const RatedMovies = () => {
                                 />
                             ) : ''}
                     </ImageList>
+                    <Pagination
+                        count={count}
+                        page={page}
+                        onChange={onPaginationChange}
+                        size="large"
+                    />
                 </div>
             : <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p> }
         </>

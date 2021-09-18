@@ -1,7 +1,9 @@
 .container {
     &_flex {
         display: flex;
+        flex-wrap:wrap;
         gap: 1rem;
+        padding-top: 0.5rem;
 
         &_column {
             flex-direction: column;
@@ -10,6 +12,10 @@
             &_center {
                 align-items: center;
             }
+        }
+
+        &_small-gap {
+            row-gap: 0.5rem;
         }
     }
 }

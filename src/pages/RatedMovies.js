@@ -17,7 +17,7 @@ const RatedMovies = () => {
     const limit = 10;
     const history = useHistory();
     const dispatch = useDispatch();
-    console.log(ratedMovies);
+
     // for filter panel
     const [activeGenres, setActiveGenres] = useState([]);
 
@@ -54,9 +54,7 @@ const RatedMovies = () => {
 
     const onChipClick = (genre) => {
         let set = new Set(activeGenres);
-        console.log("set before", set);
         set.has(genre) ? set.delete(genre) : set.add(genre);
-        console.log("set after", set);
         setActiveGenres(Array.from(set));
     }
     

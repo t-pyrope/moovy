@@ -3,11 +3,11 @@ const initState = { ratedMovies: [], genres: [] };
 const ratedMoviesReducer = (state=initState, action) => {
     switch(action.type) {
         case "ADD_RATING":
-            let movie = state.ratedMovies.find(m => m.id === action.payload.id);
-            let newGenres = [...state.genres];
+            let newGenres = new Set(state.genres);
             for (let genre of action.payload.genres) {
-                if (!newGenres.includes(genre)) newGenres.push(genre);
+                newGenres.add(genre);
             }
+            let movie = state.ratedMovies.find(m => m.id === action.payload.id);
             let newRatedMovies;
             if (movie) {
                 newRatedMovies = state.ratedMovies.filter(m => m.id !== action.payload.id);
@@ -21,7 +21,7 @@ const ratedMoviesReducer = (state=initState, action) => {
                 title: action.payload.title,
                 genres: action.payload.genres
             });
-            return { ...state, ratedMovies: newRatedMovies, genres: newGenres }
+            return { ...state, ratedMovies: newRatedMovies, genres: Array.from(newGenres) }
         default:
             return { ...state }
     }

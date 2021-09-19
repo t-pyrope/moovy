@@ -21,6 +21,7 @@ const Card = ({ poster, title, onClick, id }) => {
     }, [ratedMovies, id])
 
     const onChange = (e) => {
+        setMyRating(+e.target.value);
         dispatch(addRating(id, +e.target.value, poster, title))
     }
 

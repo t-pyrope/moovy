@@ -4,7 +4,7 @@ A simple website of movies.
 
 Check how it looks like here: [movie-moovy.netlify.app](https://movie-moovy.netlify.app/)
 
-I'm using a free API-key from [OMDb](http://www.omdbapi.com/)
+I'm using a free API-key from [OMDb API](http://www.omdbapi.com/)
 
 ### Usage
 ```

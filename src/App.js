@@ -3,7 +3,7 @@ import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
 import Header from './components/Header';
 import Search from './pages/SearchPage';
 import MovieDetails from './pages/MovieDetails';
-import RatedMovies from './pages/RatedMovies';
+import RatedMoviesPage from './pages/RatedMoviesPage';
 
 function App() {
   const location = useLocation();
@@ -18,8 +18,8 @@ function App() {
         <Route path="/movie/:id">
           <MovieDetails />
         </Route>
-        <Route path="/rated" exact>
-          <RatedMovies />
+        <Route path="/rated">
+          <RatedMoviesPage />
         </Route>
         <Route
           render={() => <Redirect to="/search" /> }

@@ -9,38 +9,45 @@ const RatedMoviesPage = () => {
     const [displayMovies, setDisplayMovies] = useState([]);
     // all movies of specific chosen genres
     const [genreMovies, setGenreMovies] = useState([]);
+
     const [filterPanel, setFilterPanel] = useState({genres: [], activeGenres: []});
-    const [pagination, setPagination] = useState({count: 0, page: 1});
+    const [count, setCount] = useState(0);
+    const [page, setPage] = useState(1);
     const { ratedMovies, genres } = useSelector(state => state.rated);
     const limit = 10;
     const { path, url } = useRouteMatch();
     const history = useHistory();
 
     useEffect(() => {
+        setFilterPanel({...filterPanel, genres})
+    
         if (ratedMovies.length) {
-            history.push(`${url}/${pagination.page}`);
-            setPagination({...pagination, count: Math.ceil(ratedMovies.length / limit)})
+            setCount(Math.ceil(ratedMovies.length / limit))
+        }
+    
+        const pageUrl = window.location.pathname;
+        if (!ratedMovies.length && (pageUrl !== "/rated")) {
+            history.push(url);
         }
     }, [])
 
     useEffect(() => {
-        let count;
+        if (!ratedMovies.length) return;
+        let moviesCount;
         if (genreMovies.length) {
-            count = Math.ceil(genreMovies.length / limit)
+            moviesCount = Math.ceil(genreMovies.length / limit)
         } else {
-            count = Math.ceil(ratedMovies.length / limit)
+            moviesCount = Math.ceil(ratedMovies.length / limit)
         }
-        setPagination({ ...pagination, count })
+        setCount(moviesCount)
     }, [genreMovies.length])
 
     useEffect(() => {
-        setFilterPanel({...filterPanel, genres})
-    }, [])
-
-    useEffect(() => {
-        let movies = ratedMovies.slice((pagination.page - 1) * limit, pagination.page * limit);
+        if (!ratedMovies.length) return;
+        let movies = ratedMovies.slice((page - 1) * limit, page * limit);
         setDisplayMovies(movies);
-    }, [pagination.page]);
+        history.push(`${url}/${page}`);
+    }, [page]);
 
     useEffect(() => {
         let movies = ratedMovies
@@ -56,36 +63,39 @@ const RatedMoviesPage = () => {
         } else {
             setGenreMovies(movies);
         }
-        setDisplayMovies(movies.slice((pagination.page - 1) * limit, pagination.page * limit));
-    }, [filterPanel.activeGenres, pagination.page])
+        setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
+    }, [filterPanel.activeGenres])
 
     const onPaginationChange = (e, p) => {
-        setPagination({...pagination, page: p});
+        setPage(p);
     }
 
     const onChipClick = (genre) => {
         let set = new Set(filterPanel.activeGenres);
         set.has(genre) ? set.delete(genre) : set.add(genre);
         setFilterPanel({...filterPanel, activeGenres: Array.from(set)});
-        setPagination({...pagination, page: 1});
+        setPage(1);
     }
     
     return(
         <>
             <h2>Rated by me</h2>
             <Switch>
-                <Route path={path} exact>
-                    <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p>
-                </Route>
-                <Route path={`${path}/:${pagination.page}`}>
-                    <MoviesContainer
+                <Route
+                    path={path}
+                    render={() => <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p>}
+                    exact
+                />
+                <Route
+                    path={`${path}/:pageId`}
+                    render={() => <MoviesContainer
                         movies={displayMovies}
                         filterPanel={filterPanel}
-                        pagination={pagination}
+                        count={count}
                         onChipClick={onChipClick}
                         onPaginationChange={onPaginationChange}
-                    />
-                </Route>
+                    />}
+                />
             </Switch>
         </>
     )

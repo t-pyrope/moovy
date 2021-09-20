@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import fetchDetail from '../actions/detailAction';
@@ -11,12 +11,13 @@ import { Pagination } from '@material-ui/lab';
 import { ImageList } from '@material-ui/core';
 
 const MoviesContainer = ({
-    movies, pagination,
+    movies, count,
     filterPanel = null,
     onChipClick, onPaginationChange
 }) => {
     const history = useHistory();
     const dispatch = useDispatch();
+    let { pageId } = useParams();
 
     const onClick = id => {
         dispatch(fetchDetail(id));
@@ -33,8 +34,8 @@ const MoviesContainer = ({
                 />
             }
             <Pagination
-                count={pagination.count}
-                page={pagination.page}
+                count={count}
+                page={pageId}
                 onChange={onPaginationChange}
                 size="large"
             />
@@ -50,8 +51,8 @@ const MoviesContainer = ({
                     )}
             </ImageList>
             <Pagination
-                count={pagination.count}
-                page={pagination.page}
+                count={count}
+                page={pageId}
                 onChange={onPaginationChange}
                 size="large"
             />

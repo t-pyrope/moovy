@@ -1,5 +1,5 @@
 import axios from "axios";
-import { titleSearchURL, yearSearchURL, titleYearSearchURL } from "../api";
+import { titleSearchURL, titleYearSearchURL } from "../api";
 
 export const fetchTitleSearch = (title, page) => async (dispatch) => {
     await axios.get(titleSearchURL(title, page))
@@ -10,21 +10,6 @@ export const fetchTitleSearch = (title, page) => async (dispatch) => {
                     searchedMovies: res.data.Search,
                     title, page,
                     searchBy: 'searchByTitle',
-                    length: res.data.totalResults,
-                }
-            })
-        }).catch(e => console.error(e));
-}
-
-export const fetchYearSearch = (year, page) => async (dispatch) => {
-    await axios.get(yearSearchURL(year, page))
-        .then(res => {
-            dispatch({
-                type: "FETCH_SEARCH_YEAR",
-                payload: {
-                    searchedMovies: res.data.Search,
-                    year, page,
-                    searchBy: 'searchByYear',
                     length: res.data.totalResults,
                 }
             })

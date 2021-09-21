@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTitleSearch, fetchYearSearch, fetchBothSearch } from '../actions/searchAction';
+import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
 
 import {
     InputBase, IconButton, FormGroup,
@@ -30,7 +30,6 @@ const SearchComponent = ({ extended = false, page = 1 }) => {
     const onSubmit = (e) => {
         e.preventDefault();
         if (titleValue && !yearValue) dispatch(fetchTitleSearch(titleValue, page));
-        if (!titleValue && yearValue) dispatch(fetchYearSearch(yearValue, page));
         if (titleValue && yearValue) dispatch(fetchBothSearch(titleValue, yearValue, page));
         if (!extended) setTitleValue('');
         history.push("/search");

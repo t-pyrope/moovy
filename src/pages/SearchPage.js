@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTitleSearch, fetchYearSearch, fetchBothSearch } from '../actions/searchAction';
+import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
 
-import { ImageList } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
-
-import Card from '../components/Card';
+import MoviesContainer from '../components/MoviesContainer';
 
 const SearchPage = () => {
-    const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
+    const [page, setPage] = useState(1);
     const {
         searchedMovies, title, year,
-        searchBy, length, initial
+        searchBy, errorMessage, length
     } = useSelector(state => state.search);
+    
     const history = useHistory();
     const dispatch = useDispatch();
+    const { path, url } = useRouteMatch();
+
+    useEffect(() => {
+        if(!searchedMovies.length) {
+            history.push(url);
+        } else {
+            history.push(`${url}/${page}`);
+        }
+    }, [searchedMovies.length])
 
     useEffect(() => {
         setCount(Math.ceil(length / 10))
     }, [setCount, length])
 
-    const onClick = id => {
-        history.push(`/movie/${id}`);
-    }
-
     const onPaginationChange = (e, p) => {
         switch(searchBy) {
             case 'searchByTitle':
                 dispatch(fetchTitleSearch(title, p));
-                break;
-            case 'searchByYear':
-                dispatch(fetchYearSearch(year, p));
                 break;
             case 'searchByBoth':
                 dispatch(fetchBothSearch(title, year, p));
@@ -42,42 +42,36 @@ const SearchPage = () => {
                 return;
         }
         setPage(p);
+        history.push(`${url}/${p}`);
     }
 
     
 
     return (
         <>
-            { initial ? 'Nothing to display. Try to search something!'
-                : <div className="container_flex container_flex_column container_flex_column_center"> 
-                    { searchedMovies?.length ?
-                        <>
-                            <Pagination
-                                count={count}
-                                page={page}
-                                onChange={onPaginationChange}
-                                size="large"
-                            />
-                            <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
-                                {searchedMovies.length ? searchedMovies.map(m =>
-                                        <Card
-                                            key={m.imdbID}
-                                            id={m.imdbID}
-                                            title={m.Title}
-                                            poster={m.Poster}
-                                            onClick={onClick}
-                                        />
-                                    ) : ''}
-                            </ImageList>
-                            <Pagination
-                                count={count}
-                                page={page}
-                                onChange={onPaginationChange}
-                                size="large"
-                            /></> : "Couldn't find anything"
+            <Switch>
+                <Route
+                    path={path}
+                    render={() => errorMessage ?
+                        <p>{errorMessage}</p> 
+                        :<p>Nothing to display. Try to search something!</p>
                     }
-                </div>
-            }
+                    exact
+                />
+                <Route
+                    path={`${path}/:pageId`}
+                    render={() =>
+                        <>
+                            <h2>Search for: {title}{year ? `, ${year}` : ''} </h2>
+                            <MoviesContainer
+                                movies={searchedMovies}
+                                count={count}
+                                onPaginationChange={onPaginationChange}
+                            />
+                        </>
+                    }
+                />
+            </Switch>
         </>
     )
 }

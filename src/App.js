@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Header />
       <Switch location={location} key={location.pathname.split('/')[1]}>
-        <Route path="/search" exact>
+        <Route path="/search">
           <Search />
         </Route>
         <Route path="/movie/:id">

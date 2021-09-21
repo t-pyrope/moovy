@@ -7,18 +7,18 @@ const ratedMoviesReducer = (state=initState, action) => {
             for (let genre of action.payload.genres) {
                 newGenres.add(genre);
             }
-            let movie = state.ratedMovies.find(m => m.id === action.payload.id);
+            let movie = state.ratedMovies.find(m => m.imdbID === action.payload.id);
             let newRatedMovies;
             if (movie) {
-                newRatedMovies = state.ratedMovies.filter(m => m.id !== action.payload.id);
+                newRatedMovies = state.ratedMovies.filter(m => m.imdbID !== action.payload.id);
             } else {
                 newRatedMovies = [...state.ratedMovies];
             }
             newRatedMovies.push({
-                id: action.payload.id,
+                imdbID: action.payload.id,
                 rating: action.payload.rating,
-                posterUrl: action.payload.posterUrl,
-                title: action.payload.title,
+                Poster: action.payload.posterUrl,
+                Title: action.payload.title,
                 genres: action.payload.genres
             });
             return { ...state, ratedMovies: newRatedMovies, genres: Array.from(newGenres) }

@@ -3,6 +3,7 @@ import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import MoviesContainer from '../components/MoviesContainer';
+import ScrollTop from '../components/ScrollTop';
 
 const RatedMoviesPage = () => {
     // displayed 10 movies per page
@@ -97,6 +98,7 @@ const RatedMoviesPage = () => {
                     />}
                 />
             </Switch>
+            <ScrollTop />
         </>
     )
 }

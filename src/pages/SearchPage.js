@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
 
 import MoviesContainer from '../components/MoviesContainer';
+import ScrollTop from '../components/ScrollTop';
 
 const SearchPage = () => {
     const [count, setCount] = useState(0);
@@ -72,6 +73,7 @@ const SearchPage = () => {
                     }
                 />
             </Switch>
+            <ScrollTop />
         </>
     )
 }

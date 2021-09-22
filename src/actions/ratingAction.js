@@ -10,7 +10,7 @@ const addRating = (id, rating, posterUrl, title) => async (dispatch) => {
                 id, rating, posterUrl, title, genres
             }
         })
-    }).catch(e => console.error(e));
+    }).catch(e => console.error(e)); // eslint-disable-line no-console
 }
 
 export default addRating;

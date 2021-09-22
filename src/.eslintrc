@@ -1,0 +1,13 @@
+{
+    "extends": [
+      "react-app",
+      "prettier"
+    ],
+    "rules": {
+        "no-console": 2,
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    },
+    "plugins": [
+      "prettier"
+    ]
+  }

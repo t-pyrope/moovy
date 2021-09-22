@@ -11,7 +11,7 @@ const RatedMoviesPage = () => {
     // all movies of specific chosen genres
     const [genreMovies, setGenreMovies] = useState([]);
 
-    const [filterPanel, setFilterPanel] = useState({genres: [], activeGenres: []});
+    const [activeGenres, setActiveGenres] = useState([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
     const { ratedMovies, genres } = useSelector(state => state.rated);
@@ -19,62 +19,67 @@ const RatedMoviesPage = () => {
     const { path, url } = useRouteMatch();
     const history = useHistory();
 
-    useEffect(() => {
-        setFilterPanel({...filterPanel, genres})
-    
-        if (ratedMovies.length) {
-            setCount(Math.ceil(ratedMovies.length / limit))
-        }
-    
+    useEffect(() => {    
+        // if there is no movies, make sure the url is /rated
         const pageUrl = window.location.pathname;
         if (!ratedMovies.length && (pageUrl !== "/rated")) {
             history.push(url);
         }
-    }, [])
+    }, [ratedMovies.length, history, url])
 
     useEffect(() => {
-        if (!ratedMovies.length) return;
-        let moviesCount;
+        // set number of pages, when genreMovies change
         if (genreMovies.length) {
-            moviesCount = Math.ceil(genreMovies.length / limit)
-        } else {
-            moviesCount = Math.ceil(ratedMovies.length / limit)
+            setCount(Math.ceil(genreMovies.length / limit));
+        } else if (ratedMovies.length) {
+            setCount(Math.ceil(ratedMovies.length / limit))
         }
-        setCount(moviesCount)
-    }, [genreMovies.length])
+    }, [genreMovies.length, ratedMovies.length]);
 
     useEffect(() => {
-        if (!ratedMovies.length) return;
-        let movies = ratedMovies.slice((page - 1) * limit, page * limit);
-        setDisplayMovies(movies);
+        // setting display movies
+        if (ratedMovies.length) {
+            let movies = ratedMovies.slice((page - 1) * limit, page * limit);
+            setDisplayMovies(movies);
+        }
+    }, [ratedMovies, page]);
+
+    useEffect(() => {
         history.push(`${url}/${page}`);
-    }, [page]);
+    }, [history, url, page]);
 
     useEffect(() => {
-        let movies = ratedMovies
-            .filter(m => {
-                let ok = true;
-                for (let value of filterPanel.activeGenres) {
-                    if (!m.genres.includes(value)) ok = false;
-                }
-                return ok;
-            })
-        if (movies.length === ratedMovies.length) {
-            setGenreMovies([])
-        } else {
-            setGenreMovies(movies);
+        // setting display movies
+        let movies;
+        if (activeGenres.length) {
+            movies = ratedMovies
+                .filter(m => {
+                    let ok = true;
+                    for (let value of activeGenres) {
+                        if (!m.genres.includes(value)) ok = false;
+                    }
+                    return ok;
+                })
+            if (movies.length === ratedMovies.length) {
+                setGenreMovies([])
+            } else {
+                setGenreMovies(movies);
+            }
+            setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
+        } else if (ratedMovies.length) {
+            movies = ratedMovies.slice((page - 1) * limit, page * limit);
+            setDisplayMovies(movies);
         }
-        setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
-    }, [filterPanel.activeGenres])
+    }, [activeGenres, page, ratedMovies])
 
     const onPaginationChange = (e, p) => {
         setPage(p);
     }
 
     const onChipClick = (genre) => {
-        let set = new Set(filterPanel.activeGenres);
+        let set = new Set(activeGenres);
         set.has(genre) ? set.delete(genre) : set.add(genre);
-        setFilterPanel({...filterPanel, activeGenres: Array.from(set)});
+        setActiveGenres(Array.from(set));
         setPage(1);
     }
     
@@ -91,7 +96,8 @@ const RatedMoviesPage = () => {
                     path={`${path}/:pageId`}
                     render={() => <MoviesContainer
                         movies={displayMovies}
-                        filterPanel={filterPanel}
+                        activeGenres={activeGenres}
+                        genres={genres}
                         count={count}
                         onChipClick={onChipClick}
                         onPaginationChange={onPaginationChange}

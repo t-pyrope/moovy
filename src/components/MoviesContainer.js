@@ -9,17 +9,17 @@ import { ImageList } from '@material-ui/core';
 
 const MoviesContainer = ({
     movies, count,
-    filterPanel = null,
+    genres, activeGenres,
     onChipClick, onPaginationChange
 }) => {
     let { pageId } = useParams();
 
     return(
         <div className="container_flex container_flex_column container_flex_column_center">
-            {filterPanel &&
+            {genres &&
                 <FilterPanel
-                    genres={filterPanel.genres}
-                    activeGenres={filterPanel.activeGenres}
+                    genres={genres}
+                    activeGenres={activeGenres}
                     onChipClick={onChipClick}
                 />
             }

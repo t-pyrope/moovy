@@ -13,7 +13,7 @@ export const fetchTitleSearch = (title, page) => async (dispatch) => {
                     length: res.data.totalResults,
                 }
             })
-        }).catch(e => console.error(e));
+        }).catch(e => console.error(e)); // eslint-disable-line no-console
 }
 
 export const fetchBothSearch = (title, year, page) => async(dispatch) => {
@@ -28,5 +28,5 @@ export const fetchBothSearch = (title, year, page) => async(dispatch) => {
                     length: res.data.totalResults,
                 }
             })
-        }).catch(e => console.error(e));
+        }).catch(e => console.error(e)); // eslint-disable-line no-console
 }

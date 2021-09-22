@@ -25,7 +25,7 @@ const SearchPage = () => {
         } else {
             history.push(`${url}/${page}`);
         }
-    }, [searchedMovies.length])
+    }, [searchedMovies.length, url, history, page])
 
     useEffect(() => {
         setCount(Math.ceil(length / 10))
@@ -43,7 +43,6 @@ const SearchPage = () => {
                 return;
         }
         setPage(p);
-        history.push(`${url}/${p}`);
     }
 
     

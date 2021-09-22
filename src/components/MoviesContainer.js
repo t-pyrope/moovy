@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
-import fetchDetail from '../actions/detailAction';
+import { useParams } from 'react-router-dom';
 
 import FilterPanel from './FilterPanel';
 import Card from './Card';
@@ -15,14 +12,7 @@ const MoviesContainer = ({
     filterPanel = null,
     onChipClick, onPaginationChange
 }) => {
-    const history = useHistory();
-    const dispatch = useDispatch();
     let { pageId } = useParams();
-
-    const onClick = id => {
-        dispatch(fetchDetail(id));
-        history.push(`/movie/${id}`);
-    }
 
     return(
         <div className="container_flex container_flex_column container_flex_column_center">
@@ -46,7 +36,6 @@ const MoviesContainer = ({
                         id={m.imdbID}
                         title={m.Title}
                         poster={m.Poster}
-                        onClick={() => onClick(m.id)}
                     />
                 )}
             </ImageList>

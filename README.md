@@ -1,8 +1,11 @@
 # Moovy
 
-A simple website of movies.
+A simple website of movies, a test assignment from [Bluesoft](https://www.bluesoft.cz/en/)
 
-Check how it looks like here: [movie-moovy.netlify.app](https://movie-moovy.netlify.app/)
+*some adds*
+> Bluesoft — We design, develop and care about your web projects with the Kentico platform!
+
+Check how the project looks like here: [movie-moovy.netlify.app](https://movie-moovy.netlify.app/)
 
 I'm using a free API-key from [OMDb API](http://www.omdbapi.com/)
 

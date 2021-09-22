@@ -14,7 +14,7 @@ const Card = ({ poster, title, onClick, id }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const myRatingMovie = ratedMovies.find(m => m.id === id);
+        const myRatingMovie = ratedMovies.find(m => m.imdbID === id);
         if (myRatingMovie) {
             setMyRating(+myRatingMovie.rating);
         }

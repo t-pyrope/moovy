@@ -29,14 +29,14 @@ const MovieDetails = () => {
     } = useSelector(state => state.detail);
         
     useEffect(() => {
-        const myRatingMovie = ratedMovies.find(m => m.id === id);
+        const myRatingMovie = ratedMovies.find(m => m.imdbID === id);
         if (myRatingMovie) {
             setMyRating(myRatingMovie.rating);
         }
     }, [ratedMovies, id])
 
     const onChange = (e) => {
-        dispatch(addRating(id, e.target.value, posterUrl, title))
+        dispatch(addRating(id, +e.target.value, posterUrl, title))
     }
 
     return(

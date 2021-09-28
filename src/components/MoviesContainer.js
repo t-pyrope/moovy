@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +10,9 @@ import { ImageList } from '@material-ui/core';
 const MoviesContainer = ({
     movies, count,
     genres, activeGenres,
-    onChipClick, onPaginationChange
+    onChipClick, onPaginationChange,
+    ratings, activeRatings,
+    onRatingChipClick,
 }) => {
     let { pageId } = useParams();
 
@@ -18,10 +20,20 @@ const MoviesContainer = ({
         <div className="container_flex container_flex_column container_flex_column_center">
             {genres &&
                 <FilterPanel
-                    genres={genres}
-                    activeGenres={activeGenres}
+                    items={genres}
+                    activeItems={activeGenres}
                     onChipClick={onChipClick}
+                    color="secondary"
                 />
+            }
+            {
+                ratings &&
+                    <FilterPanel
+                        items={ratings}
+                        activeItems={activeRatings}
+                        onChipClick={onRatingChipClick}
+                        color="primary"
+                    />
             }
             <Pagination
                 count={count}

@@ -1,4 +1,4 @@
-const initState = { ratedMovies: [], genres: [] };
+const initState = { ratedMovies: [], genres: [], ratings: [] };
 
 const ratedMoviesReducer = (state=initState, action) => {
     switch(action.type) {
@@ -7,6 +7,7 @@ const ratedMoviesReducer = (state=initState, action) => {
             for (let genre of action.payload.genres) {
                 newGenres.add(genre);
             }
+
             let movie = state.ratedMovies.find(m => m.imdbID === action.payload.id);
             let newRatedMovies;
             if (movie) {
@@ -21,7 +22,18 @@ const ratedMoviesReducer = (state=initState, action) => {
                 Title: action.payload.title,
                 genres: action.payload.genres
             });
-            return { ...state, ratedMovies: newRatedMovies, genres: Array.from(newGenres) }
+
+            let newRatings = new Set();
+            for (let movie of newRatedMovies) {
+                newRatings.add(movie.rating)
+            }
+
+            return {
+                ...state,
+                ratedMovies: newRatedMovies,
+                genres: Array.from(newGenres),
+                ratings: Array.from(newRatings),
+            }
         default:
             return { ...state }
     }

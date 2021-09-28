@@ -1,16 +1,20 @@
 import React from 'react';
-import { Chip } from '@material-ui/core'
+import { Rating } from '@material-ui/lab';
+import { Chip } from '@material-ui/core';
 
-const FilterPanel = ({ genres, activeGenres, onChipClick }) => {
+const FilterPanel = ({ items, activeItems, onChipClick, color }) => {
     return(
         <div className="container_flex container_flex_small-gap">
-            {genres.map(genre =>
-                <span key={genre}>
+            {items.map(item =>
+                <span key={item}>
                     <Chip
-                        label={genre}
-                        color="secondary"
-                        variant={activeGenres.includes(genre) ? 'default' : 'outlined'}
-                        onClick={() => onChipClick(genre)}
+                        label={isFinite(item)
+                            ? <Rating name={String(item)} value={item} size="small" max={item} readOnly />
+                            : item
+                        }
+                        color={color}
+                        variant={activeItems.includes(item) ? 'default' : 'outlined'}
+                        onClick={() => onChipClick(item)}
                     />
                     {" "}
                 </span>

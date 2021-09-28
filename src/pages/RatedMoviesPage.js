@@ -9,12 +9,13 @@ const RatedMoviesPage = () => {
     // displayed 10 movies per page
     const [displayMovies, setDisplayMovies] = useState([]);
     // all movies of specific chosen genres
-    const [genreMovies, setGenreMovies] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
 
     const [activeGenres, setActiveGenres] = useState([]);
+    const [activeRatings, setActiveRatings] = useState([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
-    const { ratedMovies, genres } = useSelector(state => state.rated);
+    const { ratedMovies, genres, ratings } = useSelector(state => state.rated);
     const limit = 10;
     const { path, url } = useRouteMatch();
     const history = useHistory();
@@ -28,13 +29,13 @@ const RatedMoviesPage = () => {
     }, [ratedMovies.length, history, url])
 
     useEffect(() => {
-        // set number of pages, when genreMovies change
-        if (genreMovies.length) {
-            setCount(Math.ceil(genreMovies.length / limit));
+        // set number of pages, when filteredMovies change
+        if (filteredMovies.length) {
+            setCount(Math.ceil(filteredMovies.length / limit));
         } else if (ratedMovies.length) {
             setCount(Math.ceil(ratedMovies.length / limit))
         }
-    }, [genreMovies.length, ratedMovies.length]);
+    }, [filteredMovies.length, ratedMovies.length]);
 
     useEffect(() => {
         // setting display movies
@@ -50,9 +51,14 @@ const RatedMoviesPage = () => {
 
     useEffect(() => {
         // setting display movies
-        let movies;
+        let movies = [...ratedMovies];
+        // if there are some genres for filter chosen
+        if (ratedMovies.length) {
+            movies = ratedMovies.slice((page - 1) * limit, page * limit);
+        }
         if (activeGenres.length) {
-            movies = ratedMovies
+            // filter movies for that genres
+            movies = movies
                 .filter(m => {
                     let ok = true;
                     for (let value of activeGenres) {
@@ -60,17 +66,25 @@ const RatedMoviesPage = () => {
                     }
                     return ok;
                 })
+            // if all movies are of chosen genres
             if (movies.length === ratedMovies.length) {
-                setGenreMovies([])
-            } else {
-                setGenreMovies(movies);
+                // do nothing
+                setFilteredMovies([]);
+                setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
             }
-            setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
-        } else if (ratedMovies.length) {
-            movies = ratedMovies.slice((page - 1) * limit, page * limit);
-            setDisplayMovies(movies);
         }
-    }, [activeGenres, page, ratedMovies])
+        if (activeRatings.length) {
+            movies = movies.filter(m => {
+                let ok = true;
+                for (let value of activeRatings) {
+                    if (!(m.rating === value)) ok = false;
+                }
+                return ok;
+            })
+        }
+        setFilteredMovies(movies);
+        setDisplayMovies(movies);
+    }, [activeGenres, page, ratedMovies, activeRatings])
 
     const onPaginationChange = (e, p) => {
         setPage(p);
@@ -80,6 +94,13 @@ const RatedMoviesPage = () => {
         let set = new Set(activeGenres);
         set.has(genre) ? set.delete(genre) : set.add(genre);
         setActiveGenres(Array.from(set));
+        setPage(1);
+    }
+
+    const onRatingChipClick = (rating) => {
+        let set = new Set(activeRatings);
+        set.has(rating) ? set.delete(rating) : set.add(rating);
+        setActiveRatings(Array.from(set));
         setPage(1);
     }
     
@@ -101,6 +122,9 @@ const RatedMoviesPage = () => {
                         count={count}
                         onChipClick={onChipClick}
                         onPaginationChange={onPaginationChange}
+                        ratings={ratings}
+                        activeRatings={activeRatings}
+                        onRatingChipClick={onRatingChipClick}
                     />}
                 />
             </Switch>

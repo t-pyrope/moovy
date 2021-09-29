@@ -1,0 +1,36 @@
+.skeleton {
+    &_container {
+        position: relative;
+        width: 100%;
+        margin-top: 0.5rem;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 100%;
+            width: 100%;
+            animation: shine 3s linear infinite;
+            background-image: linear-gradient(to right, transparent 0%, transparent 5%, rgb(255,255,255) 15%, transparent 25%, transparent 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+    }
+
+    &_pagination {
+        background-color: #F3F3F3;
+        border-radius: 1rem;
+        width: 414px;
+        max-width: 90%;
+        height: 40px;
+        margin: 1rem auto 0.5rem;
+    }
+}
+
+@keyframes shine {
+    0%{
+      background-position: -1500px 0;
+    }
+    100%{
+      background-position: 1500px 0;
+    }
+}

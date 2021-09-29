@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -6,13 +6,14 @@ import FilterPanel from './FilterPanel';
 import Card from './Card';
 import { Pagination } from '@material-ui/lab';
 import { ImageList } from '@material-ui/core';
+import MoviesSkeleton from './skeleton/MoviesSkeleton';
 
 const MoviesContainer = ({
     movies, count,
     genres, activeGenres,
     onChipClick, onPaginationChange,
     ratings, activeRatings,
-    onRatingChipClick,
+    onRatingChipClick, isLoading
 }) => {
     let { pageId } = useParams();
 
@@ -41,19 +42,22 @@ const MoviesContainer = ({
                 onChange={onPaginationChange}
                 size="large"
             />
-            <ImageList
-                variant="masonry"
-                className="container_grid"
-            >
-                {movies.map((m, i) =>
-                    <Card
-                        key={m.imdbID + i}
-                        id={m.imdbID}
-                        title={m.Title}
-                        poster={m.Poster}
-                    />
-                )}
-            </ImageList>
+            { isLoading
+                ? <MoviesSkeleton />
+                : <ImageList
+                    variant="masonry"
+                    className="container_grid"
+                >
+                    {movies.map((m, i) =>
+                        <Card
+                            key={m.imdbID + i}
+                            id={m.imdbID}
+                            title={m.Title}
+                            poster={m.Poster}
+                        />
+                    )}
+                </ImageList>
+            }
             <Pagination
                 count={count}
                 page={+pageId}

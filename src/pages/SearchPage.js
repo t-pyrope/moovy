@@ -10,6 +10,8 @@ import ScrollTop from '../components/ScrollTop';
 const SearchPage = () => {
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+
     const {
         searchedMovies, title, year,
         searchBy, errorMessage, length
@@ -20,16 +22,32 @@ const SearchPage = () => {
     const { path, url } = useRouteMatch();
 
     useEffect(() => {
-        if(!searchedMovies.length) {
+        if(!(title.length && searchedMovies.length)) {
             history.push(url);
         } else {
             history.push(`${url}/${page}`);
         }
-    }, [searchedMovies.length, url, history, page])
+    }, [title, url, history, page, searchedMovies])
 
     useEffect(() => {
         setCount(Math.ceil(length / 10))
     }, [setCount, length])
+
+    useEffect(() => {
+        // set page to 1, when user searches for something different
+        setPage(1);
+    }, [title])
+
+    useEffect(() => {
+        // activate skeleton between page switches
+        setIsLoading(true);
+        let timeout = setTimeout(() => {
+            setIsLoading(false)
+        }, 1000);
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [page])
 
     const onPaginationChange = (e, p) => {
         switch(searchBy) {
@@ -67,6 +85,7 @@ const SearchPage = () => {
                                 movies={searchedMovies}
                                 count={count}
                                 onPaginationChange={onPaginationChange}
+                                isLoading={isLoading}
                             />
                         </>
                     }

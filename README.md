@@ -1,9 +1,6 @@
 # Moovy
 
-A simple website of movies, a solution for the test assignment from [Bluesoft](https://www.bluesoft.cz/en/)
-
-*some adds*
-> Bluesoft — We design, develop and care about your web projects with the Kentico platform!
+A simple website of movies
 
 Check how the project looks like here: [movie-moovy.netlify.app](https://movie-moovy.netlify.app/)
 

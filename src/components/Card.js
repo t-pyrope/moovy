@@ -35,12 +35,12 @@ const Card = ({ poster, title, id }) => {
 
     return(
         <ImageListItem
-            style={{ width: "250px", height: "360px" }}
         >
             <img
                 src={poster === "N/A" ? noPoster : poster}
                 alt={title}
                 onClick={() => onClick(id)}
+                className="image_grid-item"
             />
             <ImageListItemBar
                 title={title}

@@ -41,7 +41,10 @@ const MoviesContainer = ({
                 onChange={onPaginationChange}
                 size="large"
             />
-            <ImageList style={{ gap: "1rem", justifyContent: "center" }}>
+            <ImageList
+                variant="masonry"
+                className="container_grid"
+            >
                 {movies.map((m, i) =>
                     <Card
                         key={m.imdbID + i}

@@ -9,27 +9,31 @@ const initState = {
 };
 
 const searchReducer = (state=initState, action) => {
-    let searchedMovies = action.payload?.searchedMovies ?? [];
-    let title = action.payload?.title;
-    let page = action.payload?.page;
-    let searchBy = action.payload?.searchBy;
-    let length = action.payload?.length;
     switch (action.type) {
         case 'FETCH_SEARCH_TITLE':
             return {
                 ...state,
-                searchedMovies, title, page, searchBy, length,
-                errorMessage: !searchedMovies.length
+                searchedMovies: action.payload.searchedMovies ?? [],
+                title: action.payload.title,
+                page: action.payload.page,
+                year: "",
+                searchBy: action.payload.searchBy,
+                length: action.payload.length ?? '',
+                errorMessage: !action.payload.searchedMovies
                     ? `Couldn't find anything for ${action.payload.title}`
                     : '',
             };
         case 'FETCH_SEARCH_BOTH':
-            const year = action.payload.year;
             return {
                 ...state,
-                searchedMovies, title, page, searchBy, length, year,
-                errorMessage: !searchedMovies.length
-                    ? `Couldn't find anything for ${title}, ${year}`
+                searchedMovies: action.payload.searchedMovies ?? [],
+                title: action.payload.title,
+                page: action.payload.page,
+                searchBy: action.payload.searchBy,
+                length: action.payload.length ?? '',
+                year: action.payload.year,
+                errorMessage: !action.payload.searchedMovies
+                    ? `Couldn't find anything for ${action.payload.title}, ${action.payload.year}`
                     : '',
             };
         default:

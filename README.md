@@ -16,7 +16,7 @@ npm install
 2. Get the key on [OMDb API Key page](http://www.omdbapi.com/apikey.aspx)
 3. Create `.env` file inside root folder and put your key inside:
 ```
-REACT_APP_API_KEY=*******
+REACT_APP_API_KEY=********
 ```
 
 ### Running the website in the development mode

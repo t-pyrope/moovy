@@ -15,7 +15,7 @@ describe('rated movies reducer', () => {
                 rating: 5,
                 posterUrl: 'some-url',
                 title: 'Some cool movie',
-                genres: ['cool', 'action']
+                genres: 'cool, action'
             },
         }
 
@@ -56,7 +56,7 @@ describe('rated movies reducer', () => {
                 rating: 4,
                 posterUrl: 'some-url',
                 title: 'Some cool movie',
-                genres: ['cool', 'action']
+                genres: 'cool, action'
             },
         }
 

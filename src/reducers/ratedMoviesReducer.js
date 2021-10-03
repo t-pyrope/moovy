@@ -4,7 +4,10 @@ const ratedMoviesReducer = (state=initState, action) => {
     switch(action.type) {
         case "ADD_RATING":
             let newGenres = new Set(state.genres);
-            for (let genre of action.payload.genres) {
+            let receivedGenres = (typeof(action.payload.genres) === 'string')
+                ? action.payload.genres.split(", ")
+                : [];
+            for (let genre of receivedGenres) {
                 newGenres.add(genre);
             }
 

@@ -20,7 +20,7 @@ const searchReducer = (state=initState, action) => {
                 searchBy: action.payload.searchBy,
                 length: action.payload.length ?? '',
                 errorMessage: !action.payload.searchedMovies
-                    ? `Couldn't find anything for ${action.payload.title}`
+                    ? `Couldn't find anything for `
                     : '',
             };
         case 'FETCH_SEARCH_BOTH':
@@ -33,7 +33,7 @@ const searchReducer = (state=initState, action) => {
                 length: action.payload.length ?? '',
                 year: action.payload.year,
                 errorMessage: !action.payload.searchedMovies
-                    ? `Couldn't find anything for ${action.payload.title}, ${action.payload.year}`
+                    ? `Couldn't find anything for `
                     : '',
             };
         default:

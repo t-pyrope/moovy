@@ -71,7 +71,7 @@ const SearchPage = () => {
                 <Route
                     path={path}
                     render={() => errorMessage ?
-                        <p>{errorMessage}</p> 
+                        <p>{errorMessage} <i>{title}{year ? `, ${year}` : ''}</i></p> 
                         : title.length
                             ? ''
                             : <p>Nothing to display. Try to search something!</p>

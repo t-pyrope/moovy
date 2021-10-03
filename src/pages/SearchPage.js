@@ -72,7 +72,9 @@ const SearchPage = () => {
                     path={path}
                     render={() => errorMessage ?
                         <p>{errorMessage}</p> 
-                        :<p>Nothing to display. Try to search something!</p>
+                        : title.length
+                            ? ''
+                            : <p>Nothing to display. Try to search something!</p>
                     }
                     exact
                 />

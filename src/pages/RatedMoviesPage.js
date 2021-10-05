@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import useQuery from '../helpers/useQuery';
 
 import MoviesContainer from '../components/MoviesContainer';
 import ScrollTop from '../components/ScrollTop';
@@ -17,16 +18,16 @@ const RatedMoviesPage = () => {
     const [page, setPage] = useState(1);
     const { ratedMovies, genres, ratings } = useSelector(state => state.rated);
     const limit = 10;
-    const { path, url } = useRouteMatch();
+    const { url } = useRouteMatch();
     const history = useHistory();
-
-    useEffect(() => {    
-        // if there is no movies, make sure the url is /rated
-        const pageUrl = window.location.pathname;
-        if (!ratedMovies.length && (pageUrl !== "/rated")) {
-            history.push(url);
+    const query = useQuery();
+    useEffect(() => {
+        if (!ratedMovies.length) {
+            history.replace(`/rated`);
+        } else {
+            history.push(`/rated?page=${page}`)
         }
-    }, [ratedMovies.length, history, url])
+    }, [ratedMovies.length, history, url, page])
 
     useEffect(() => {
         // set number of pages, when filteredMovies change
@@ -46,16 +47,8 @@ const RatedMoviesPage = () => {
     }, [ratedMovies, page]);
 
     useEffect(() => {
-        history.push(`${url}/${page}`);
-    }, [history, url, page]);
-
-    useEffect(() => {
-        // setting display movies
+        // setting display and filtered movies
         let movies = [...ratedMovies];
-        // if there are some genres for filter chosen
-        if (ratedMovies.length) {
-            movies = ratedMovies.slice((page - 1) * limit, page * limit);
-        }
         if (activeGenres.length) {
             // filter movies for that genres
             movies = movies
@@ -66,24 +59,17 @@ const RatedMoviesPage = () => {
                     }
                     return ok;
                 })
-            // if all movies are of chosen genres
-            if (movies.length === ratedMovies.length) {
-                // do nothing
-                setFilteredMovies([]);
-                setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
-            }
         }
         if (activeRatings.length) {
-            movies = movies.filter(m => {
-                let ok = true;
-                for (let value of activeRatings) {
-                    if (!(m.rating === value)) ok = false;
-                }
-                return ok;
-            })
+            movies = movies.filter(m => activeRatings.includes(m.rating))
         }
-        setFilteredMovies(movies);
-        setDisplayMovies(movies);
+        if (movies.length === ratedMovies.length) {
+            // do nothing
+            setFilteredMovies([]);
+        } else {
+            setFilteredMovies(movies);
+        }
+        setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
     }, [activeGenres, page, ratedMovies, activeRatings])
 
     const onPaginationChange = (e, p) => {
@@ -107,27 +93,22 @@ const RatedMoviesPage = () => {
     return(
         <>
             <h2>Rated by me</h2>
-            <Switch>
-                <Route
-                    path={path}
-                    render={() => <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p>}
-                    exact
-                />
-                <Route
-                    path={`${path}/:pageId`}
-                    render={() => <MoviesContainer
-                        movies={displayMovies}
-                        activeGenres={activeGenres}
-                        genres={genres}
-                        count={count}
-                        onChipClick={onChipClick}
-                        onPaginationChange={onPaginationChange}
-                        ratings={ratings}
-                        activeRatings={activeRatings}
-                        onRatingChipClick={onRatingChipClick}
-                    />}
-                />
-            </Switch>
+            {
+                query.get('page')
+                    ? <MoviesContainer
+                            movies={displayMovies}
+                            activeGenres={activeGenres}
+                            genres={genres}
+                            count={count}
+                            onChipClick={onChipClick}
+                            onPaginationChange={onPaginationChange}
+                            ratings={ratings}
+                            activeRatings={activeRatings}
+                            onRatingChipClick={onRatingChipClick}
+                            page={page}
+                        /> 
+                    : <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p>
+            }
             <ScrollTop />
         </>
     )

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import FilterPanel from './FilterPanel';
 import Card from './Card';
 import { Pagination } from '@material-ui/lab';
@@ -9,13 +7,12 @@ import { ImageList } from '@material-ui/core';
 import MoviesSkeleton from './skeleton/MoviesSkeleton';
 
 const MoviesContainer = ({
-    movies, count,
+    movies, count, page,
     genres, activeGenres,
     onChipClick, onPaginationChange,
     ratings, activeRatings,
     onRatingChipClick, isLoading
 }) => {
-    let { pageId } = useParams();
 
     return(
         <div className="container_flex container_flex_column container_flex_column_center">
@@ -38,14 +35,13 @@ const MoviesContainer = ({
             }
             <Pagination
                 count={count}
-                page={+pageId}
+                page={page}
                 onChange={onPaginationChange}
                 size="large"
             />
             { isLoading
                 ? <MoviesSkeleton />
                 : <ImageList
-                    variant="masonry"
                     className="container_grid"
                 >
                     {movies.map((m, i) =>
@@ -60,7 +56,7 @@ const MoviesContainer = ({
             }
             <Pagination
                 count={count}
-                page={+pageId}
+                page={page}
                 onChange={onPaginationChange}
                 size="large"
             />

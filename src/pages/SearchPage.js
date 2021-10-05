@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
+import useQuery from '../helpers/useQuery';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
@@ -11,6 +12,7 @@ const SearchPage = () => {
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const query = useQuery();
 
     const {
         searchedMovies, title, year,
@@ -19,15 +21,25 @@ const SearchPage = () => {
     
     const history = useHistory();
     const dispatch = useDispatch();
-    const { path, url } = useRouteMatch();
+    const { url } = useRouteMatch();
 
     useEffect(() => {
         if(!(title.length && searchedMovies.length)) {
             history.push(url);
+        } else if (!searchedMovies.length) {
+            if (!year.length) {
+                history.push(`${url}?title=${title}`)
+            } else {
+                history.push(`${url}?title=${title}&year=${year}`)
+            }
         } else {
-            history.push(`${url}/${page}`);
+            if (!year.length) {
+                history.push(`${url}?title=${title}&page=${page}`);
+            } else {
+                history.push(`${url}?title=${title}&year=${year}&page=${page}`);
+            }
         }
-    }, [title, url, history, page, searchedMovies])
+    }, [title, url, history, page, searchedMovies, year])
 
     useEffect(() => {
         setCount(Math.ceil(length / 10))
@@ -67,32 +79,23 @@ const SearchPage = () => {
 
     return (
         <>
-            <Switch>
-                <Route
-                    path={path}
-                    render={() => errorMessage ?
-                        <p>{errorMessage} <i>{title}{year ? `, ${year}` : ''}</i></p> 
-                        : title.length
-                            ? ''
-                            : <p>Nothing to display. Try to search something!</p>
-                    }
-                    exact
+            {query.get("page")
+                ? <>
+                <h2>Search for: {title}{year ? `, ${year}` : ''} </h2>
+                <MoviesContainer
+                    movies={searchedMovies}
+                    count={count}
+                    onPaginationChange={onPaginationChange}
+                    isLoading={isLoading}
+                    page={page}
                 />
-                <Route
-                    path={`${path}/:pageId`}
-                    render={() =>
-                        <>
-                            <h2>Search for: {title}{year ? `, ${year}` : ''} </h2>
-                            <MoviesContainer
-                                movies={searchedMovies}
-                                count={count}
-                                onPaginationChange={onPaginationChange}
-                                isLoading={isLoading}
-                            />
-                        </>
-                    }
-                />
-            </Switch>
+            </>
+                : errorMessage ?
+                <p>{errorMessage} <i>{title}{year ? `, ${year}` : ''}</i></p> 
+                : title.length
+                    ? ''
+                    : <p>Nothing to display. Try to search something!</p>
+            }
             <ScrollTop />
         </>
     )

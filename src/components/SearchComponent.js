@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
 
 import {
@@ -9,16 +9,11 @@ import {
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
-const SearchComponent = ({ extended = false, page = 1 }) => {
+const SearchComponent = ({ page = 1 }) => {
     const [titleValue, setTitleValue] = useState('');
     const [yearValue, setYearValue] = useState('');
     const history = useHistory();
     const dispatch = useDispatch();
-    const { title } = useSelector(state => state.search);
-
-    useEffect(() => {
-        if (title && extended) setTitleValue(title);
-    }, [title, extended, setTitleValue])
 
     const onChange = (e) => {
         const inputName = e.target.name;
@@ -31,7 +26,8 @@ const SearchComponent = ({ extended = false, page = 1 }) => {
         e.preventDefault();
         if (titleValue && !yearValue) dispatch(fetchTitleSearch(titleValue, page));
         if (titleValue && yearValue) dispatch(fetchBothSearch(titleValue, yearValue, page));
-        if (!extended) setTitleValue('');
+        setTitleValue('');
+        setYearValue('');
         history.push("/search");
     }
 
@@ -48,18 +44,19 @@ const SearchComponent = ({ extended = false, page = 1 }) => {
                 onChange={(e) => onChange(e)}
                 style={{ marginRight: '1rem' }}
             />
-            { extended &&
-                <TextField
-                    inputProps={{
-                        'aria-label': 'search year',
-                        'placeholder': 'add year (optional)'
-                    }}
-                    value={yearValue}
-                    name="year"
-                    onChange={(e) => onChange(e)}
-                />
-            }
-            <IconButton type="submit" disabled={!titleValue.length}>
+            <TextField
+                inputProps={{
+                    'aria-label': 'search year',
+                    'placeholder': 'add year (optional)'
+                }}
+                value={yearValue}
+                name="year"
+                onChange={(e) => onChange(e)}
+            />
+            <IconButton
+                type="submit"
+                disabled={!titleValue.length}
+            >
                 <SearchIcon />
             </IconButton>
         </FormGroup>

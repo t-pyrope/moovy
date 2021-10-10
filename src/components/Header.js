@@ -10,7 +10,7 @@ const Header = () => {
     return (
         <div className="header__main">
             <h1><Link to="/">Moovy</Link></h1>
-            <SearchComponent extended={true} page={page} />
+            <SearchComponent page={page} />
             <Link to="/rated">Rated by me</Link>
         </div>
     )

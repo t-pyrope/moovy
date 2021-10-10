@@ -16,11 +16,15 @@ const RatedMoviesPage = () => {
     const [activeRatings, setActiveRatings] = useState([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
+
+    // button "Show more"
+    const [isDisabled, setIsDisabled] = useState(false);
     const { ratedMovies, genres, ratings } = useSelector(state => state.rated);
     const limit = 10;
     const { url } = useRouteMatch();
     const history = useHistory();
     const query = useQuery();
+
     useEffect(() => {
         if (!ratedMovies.length) {
             history.replace(`/rated`);
@@ -57,12 +61,21 @@ const RatedMoviesPage = () => {
         }
         if (movies.length === ratedMovies.length) {
             // do nothing
-            setFilteredMovies([]);
+            if (filteredMovies.length) setFilteredMovies([]);
         } else {
             setFilteredMovies(movies);
         }
         setDisplayMovies(movies.slice((page - 1) * limit, page * limit));
-    }, [activeGenres, page, ratedMovies, activeRatings])
+    }, [activeGenres, page, ratedMovies, activeRatings, filteredMovies.length])
+
+    useEffect(() => {
+        let allMovies = filteredMovies.length ? [...filteredMovies] : [...ratedMovies];
+        if (allMovies.length <= (((page-1)*10) + displayMovies.length)) {
+            setIsDisabled(true)
+        } else if (isDisabled === true){
+            setIsDisabled(false)
+        }
+    }, [displayMovies.length, filteredMovies, isDisabled, page, ratedMovies])
 
     const onPaginationChange = (e, p) => {
         setPage(p);
@@ -81,6 +94,12 @@ const RatedMoviesPage = () => {
         setActiveRatings(Array.from(set));
         setPage(1);
     }
+
+    const downloadMore = () => {
+        let allMovies = filteredMovies.length ? [...filteredMovies] : [...ratedMovies];
+        let nextMovies = allMovies.slice(displayMovies.length - 1, displayMovies.length + 9);
+        setDisplayMovies([...displayMovies, ...nextMovies]);
+    }
     
     return(
         <>
@@ -98,6 +117,8 @@ const RatedMoviesPage = () => {
                             activeRatings={activeRatings}
                             onRatingChipClick={onRatingChipClick}
                             page={page}
+                            downloadMore={downloadMore}
+                            showMoreDisabled={isDisabled}
                         /> 
                     : <p style={{ marginTop: "1rem" }}>You haven't rated any movie yet</p>
             }

@@ -30,3 +30,29 @@ export const fetchBothSearch = (title, year, page) => async(dispatch) => {
             })
         }).catch(e => console.error(e)); // eslint-disable-line no-console
 }
+
+export const fetchMoreTitle = (title, page, length) => async(dispatch) => {
+    let pageToLoad = Math.trunc(page + length / 10);
+    await axios.get(titleSearchURL(title, pageToLoad))
+        .then(res => {
+            dispatch({
+                type: "FETCH_MORE",
+                payload: {
+                    searchedMovies: res.data.Search,
+                }
+            })
+        })
+}
+
+export const fetchMoreBoth = (title, year, page, length) => async(dispatch) => {
+    let pageToLoad = Math.trunc(page + length / 10);
+    await axios.get(titleYearSearchURL(title, year, pageToLoad))
+        .then(res => {
+            dispatch({
+                type: "FETCH_MORE",
+                payload: {
+                    searchedMovies: res.data.Search,
+                }
+            })
+        })
+}

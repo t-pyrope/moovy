@@ -3,7 +3,10 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import useQuery from '../helpers/useQuery';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
+import {
+    fetchTitleSearch, fetchBothSearch,
+    fetchMoreTitle, fetchMoreBoth,
+} from '../actions/searchAction';
 
 import MoviesContainer from '../components/MoviesContainer';
 import ScrollTop from '../components/ScrollTop';
@@ -75,7 +78,20 @@ const SearchPage = () => {
         setPage(p);
     }
 
-    
+    const downloadMore = () => {
+        if (length <= (((page-1)*10) + searchedMovies.length)) return;
+        switch(searchBy) {
+            case 'searchByTitle':
+                dispatch(fetchMoreTitle(title, page, searchedMovies.length));
+                break;
+            case 'searchByBoth':
+                dispatch(fetchMoreBoth(title, year, page, searchedMovies.length));
+                break;
+            default:
+                return;
+        }
+        return;
+    }
 
     return (
         <>
@@ -88,6 +104,8 @@ const SearchPage = () => {
                     onPaginationChange={onPaginationChange}
                     isLoading={isLoading}
                     page={page}
+                    downloadMore={downloadMore}
+                    showMoreDisabled={length <= (((page-1)*10) + searchedMovies.length)}
                 />
             </>
                 : errorMessage ?

@@ -36,6 +36,11 @@ const searchReducer = (state=initState, action) => {
                     ? `Couldn't find anything for `
                     : '',
             };
+        case 'FETCH_MORE':
+            return {
+                ...state,
+                searchedMovies: [...state.searchedMovies, ...action.payload.searchedMovies]
+            };
         default:
             return { ...state };
     }

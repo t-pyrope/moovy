@@ -3,7 +3,7 @@ import React from 'react';
 import FilterPanel from './FilterPanel';
 import Card from './Card';
 import { Pagination } from '@material-ui/lab';
-import { ImageList } from '@material-ui/core';
+import { ImageList, Button } from '@material-ui/core';
 import MoviesSkeleton from './skeleton/MoviesSkeleton';
 
 const MoviesContainer = ({
@@ -11,7 +11,8 @@ const MoviesContainer = ({
     genres, activeGenres,
     onChipClick, onPaginationChange,
     ratings, activeRatings,
-    onRatingChipClick, isLoading
+    onRatingChipClick, isLoading,
+    downloadMore, showMoreDisabled,
 }) => {
 
     return(
@@ -54,6 +55,15 @@ const MoviesContainer = ({
                     )}
                 </ImageList>
             }
+            <Button
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: '1rem' }}
+                onClick={downloadMore}
+                disabled={showMoreDisabled}
+            >
+                Show more
+            </Button>
             <Pagination
                 count={count}
                 page={page}

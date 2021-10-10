@@ -1,8 +1,7 @@
 .container {
     &_flex {
         display: flex;
-        flex-wrap:wrap;
-        gap: 1rem;
+        gap: 2rem;
         padding-top: 0.5rem;
 
         &_column {

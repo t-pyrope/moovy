@@ -30,7 +30,7 @@ const MoviesContainer = ({
                         items={ratings}
                         activeItems={activeRatings}
                         onChipClick={onRatingChipClick}
-                        color="primary"
+                        color="default"
                     />
             }
             <Pagination

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchTitleSearch, fetchBothSearch } from '../actions/searchAction';
 
 import {
-    InputBase, IconButton, FormGroup,
+    IconButton, FormGroup, TextField,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -37,24 +37,29 @@ const SearchComponent = ({ extended = false, page = 1 }) => {
 
     return (
         <form onSubmit={(e) => onSubmit(e)}>
-        <FormGroup row>
-            <InputBase
-                placeholder="Search movies"
-                inputProps={{ 'aria-label': 'search movies' }}
+        <FormGroup row className="form_search">
+            <TextField
+                inputProps={{
+                    'aria-label': 'search movies',
+                    'placeholder': 'Search movies'
+                }}
                 value={titleValue}
                 name="title"
                 onChange={(e) => onChange(e)}
+                style={{ marginRight: '1rem' }}
             />
             { extended &&
-                <InputBase
-                    placeholder="add year (optional)"
-                    inputProps={{ 'aria-label': 'search year' }}
+                <TextField
+                    inputProps={{
+                        'aria-label': 'search year',
+                        'placeholder': 'add year (optional)'
+                    }}
                     value={yearValue}
                     name="year"
                     onChange={(e) => onChange(e)}
                 />
             }
-            <IconButton type="submit">
+            <IconButton type="submit" disabled={!titleValue.length}>
                 <SearchIcon />
             </IconButton>
         </FormGroup>

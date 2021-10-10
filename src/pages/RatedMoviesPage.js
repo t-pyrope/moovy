@@ -39,14 +39,6 @@ const RatedMoviesPage = () => {
     }, [filteredMovies.length, ratedMovies.length]);
 
     useEffect(() => {
-        // setting display movies
-        if (ratedMovies.length) {
-            let movies = ratedMovies.slice((page - 1) * limit, page * limit);
-            setDisplayMovies(movies);
-        }
-    }, [ratedMovies, page]);
-
-    useEffect(() => {
         // setting display and filtered movies
         let movies = [...ratedMovies];
         if (activeGenres.length) {

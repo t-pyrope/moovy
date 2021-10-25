@@ -28,7 +28,7 @@ const Card = ({ poster, title, id }) => {
         dispatch(addRating(id, +e.target.value, poster, title))
     }
 
-    const onClick = id => {
+    const onClick = () => {
         dispatch(fetchDetail(id));
         history.push(`/movie/${id}`);
     }
@@ -39,7 +39,7 @@ const Card = ({ poster, title, id }) => {
             <img
                 src={poster === "N/A" ? noPoster : poster}
                 alt={title}
-                onClick={() => onClick(id)}
+                onClick={onClick}
                 className="image_grid-item"
             />
             <ImageListItemBar
@@ -48,12 +48,11 @@ const Card = ({ poster, title, id }) => {
                     <Rating
                         name={id}
                         value={myRating}
-                        onChange={(e) => onChange(e)}
+                        onChange={onChange}
                         size="small"
                     />
                 }
             >
-
             </ImageListItemBar>
         </ImageListItem>
     )

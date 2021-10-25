@@ -7,7 +7,7 @@ import {
 const fetchDetail = id => async (dispatch) => {
     dispatch({ type: LOADING_DETAIL });
 
-    await axios.get(movieDetailURL(id))
+    return axios.get(movieDetailURL(id))
         .then(res => {
             dispatch({
                 type: FETCH_DETAIL,

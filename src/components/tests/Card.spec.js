@@ -16,14 +16,14 @@ jest.mock('react-redux', () => ({
 }))
 
 describe('Card', () => {
-    const poster = 'posterUrl';
+    const posterUrl = 'posterUrl';
     const title = 'Some title';
     const id = '12345';
 
     describe('New Card', () => {
         const card = mount(
             <Card
-                poster={poster}
+                poster={posterUrl}
                 title={title}
                 id={id}
             />
@@ -44,6 +44,7 @@ describe('Card', () => {
             expect(card.find('span.MuiRating-iconEmpty')).toHaveLength(1);
             expect(card.find('label.MuiRating-label')).toHaveLength(5);
             expect(card.find('img').prop('alt')).toEqual(title);
+            expect(card.find('img').prop('src')).toEqual(posterUrl);
         })
     })
 })

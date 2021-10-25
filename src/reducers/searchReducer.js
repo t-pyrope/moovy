@@ -1,3 +1,7 @@
+import {
+    FETCH_SEARCH_TITLE, FETCH_SEARCH_BOTH, FETCH_MORE
+} from '../actions/types'
+
 const initState = {
     searchedMovies: [],
     title: '',
@@ -10,7 +14,7 @@ const initState = {
 
 const searchReducer = (state=initState, action) => {
     switch (action.type) {
-        case 'FETCH_SEARCH_TITLE':
+        case FETCH_SEARCH_TITLE:
             return {
                 ...state,
                 searchedMovies: action.payload.searchedMovies ?? [],
@@ -23,7 +27,7 @@ const searchReducer = (state=initState, action) => {
                     ? `Couldn't find anything for `
                     : '',
             };
-        case 'FETCH_SEARCH_BOTH':
+        case FETCH_SEARCH_BOTH:
             return {
                 ...state,
                 searchedMovies: action.payload.searchedMovies ?? [],
@@ -36,7 +40,7 @@ const searchReducer = (state=initState, action) => {
                     ? `Couldn't find anything for `
                     : '',
             };
-        case 'FETCH_MORE':
+        case FETCH_MORE:
             return {
                 ...state,
                 searchedMovies: [...state.searchedMovies, ...action.payload.searchedMovies]

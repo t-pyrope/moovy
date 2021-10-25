@@ -1,3 +1,7 @@
+import {
+    LOADING_DETAIL, FETCH_DETAIL,
+} from "../actions/types";
+
 const initState = {
     title: '',
     year: '',
@@ -12,9 +16,9 @@ const initState = {
 
 const detailReducer = (state=initState, action) => {
     switch(action.type) {
-        case 'LOADING_DETAIL':
+        case LOADING_DETAIL:
             return {...state, isLoading: true};
-        case 'FETCH_DETAIL':
+        case FETCH_DETAIL:
             return {
                 ...state,
                 title: action.payload.title,

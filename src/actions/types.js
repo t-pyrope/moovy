@@ -1,0 +1,6 @@
+export const ADD_RATING = 'ADD_RATING';
+export const FETCH_DETAIL = 'FETCH_DETAIL';
+export const FETCH_MORE = 'FETCH_MORE';
+export const FETCH_SEARCH_BOTH = 'FETCH_SEARCH_BOTH';
+export const FETCH_SEARCH_TITLE = 'FETCH_SEARCH_TITLE';
+export const LOADING_DETAIL = 'LOADING_DETAIL';

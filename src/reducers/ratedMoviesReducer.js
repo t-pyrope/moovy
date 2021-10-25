@@ -1,8 +1,10 @@
+import { ADD_RATING } from "../actions/types";
+
 const initState = { ratedMovies: [], genres: [], ratings: [] };
 
 const ratedMoviesReducer = (state=initState, action) => {
     switch(action.type) {
-        case "ADD_RATING":
+        case ADD_RATING:
             let newGenres = new Set(state.genres);
             let receivedGenres = (typeof(action.payload.genres) === 'string')
                 ? action.payload.genres.split(", ")

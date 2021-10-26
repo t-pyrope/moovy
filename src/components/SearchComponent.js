@@ -33,33 +33,33 @@ const SearchComponent = ({ page = 1 }) => {
 
     return (
         <form onSubmit={(e) => onSubmit(e)}>
-        <FormGroup row className="form_search">
-            <TextField
-                inputProps={{
-                    'aria-label': 'search movies',
-                    'placeholder': 'Search movies'
-                }}
-                value={titleValue}
-                name="title"
-                onChange={(e) => onChange(e)}
-                style={{ marginRight: '1rem' }}
-            />
-            <TextField
-                inputProps={{
-                    'aria-label': 'search year',
-                    'placeholder': 'add year (optional)'
-                }}
-                value={yearValue}
-                name="year"
-                onChange={(e) => onChange(e)}
-            />
-            <IconButton
-                type="submit"
-                disabled={!titleValue.length}
-            >
-                <SearchIcon />
-            </IconButton>
-        </FormGroup>
+            <FormGroup row>
+                <TextField
+                    inputProps={{
+                        'aria-label': 'search movies',
+                        'placeholder': 'Search movies'
+                    }}
+                    value={titleValue}
+                    name="title"
+                    onChange={(e) => onChange(e)}
+                    style={{ marginRight: '1rem' }}
+                />
+                <TextField
+                    inputProps={{
+                        'aria-label': 'search year',
+                        'placeholder': 'add year (optional)'
+                    }}
+                    value={yearValue}
+                    name="year"
+                    onChange={(e) => onChange(e)}
+                />
+                <IconButton
+                    type="submit"
+                    disabled={!titleValue.length}
+                >
+                    <SearchIcon />
+                </IconButton>
+            </FormGroup>
         </form>
     )
 }

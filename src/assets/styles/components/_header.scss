@@ -4,5 +4,33 @@
         justify-content: space-between;
         align-items: center;
         padding-bottom: 1rem;
+
+        form > .MuiFormGroup-row {
+            margin: 0 1rem;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+
+
+        @media(max-width: 665px){
+            flex-wrap: wrap;
+            form {
+                order: 3;
+                flex-grow: 1;
+            }
+            form > .MuiFormGroup-row {
+                justify-content: center;
+            }
+
+            .MuiFormGroup-row > .MuiFormControl-root {
+                flex-grow: 1;
+            }
+        }
+        @media(max-width: 600px) {
+            form > .MuiFormGroup-row {
+                margin: 0;
+            }
+        }
     }
 }

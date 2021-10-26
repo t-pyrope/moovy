@@ -34,42 +34,47 @@ const MoviesContainer = ({
                         color="default"
                     />
             }
-            <Pagination
-                count={count}
-                page={page}
-                onChange={onPaginationChange}
-                size="large"
-            />
-            { isLoading
-                ? <MoviesSkeleton />
-                : <ImageList
-                    className="container_grid"
-                >
-                    {movies.map((m, i) =>
-                        <Card
-                            key={m.imdbID + i}
-                            id={m.imdbID}
-                            title={m.Title}
-                            poster={m.Poster}
-                        />
-                    )}
-                </ImageList>
+            {(!movies.length && ratings)
+                ? <p style={{ marginTop: '1rem' }}>No movies on chosen filters</p>
+                : <>
+                    <Pagination
+                        count={count}
+                        page={page}
+                        onChange={onPaginationChange}
+                        size="large"
+                    />
+                    { isLoading
+                        ? <MoviesSkeleton />
+                        : <ImageList
+                            className="container_grid"
+                        >
+                            {movies.map((m, i) =>
+                                <Card
+                                    key={m.imdbID + i}
+                                    id={m.imdbID}
+                                    title={m.Title}
+                                    poster={m.Poster}
+                                />
+                            )}
+                        </ImageList>
+                    }
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{ marginTop: '1rem' }}
+                        onClick={downloadMore}
+                        disabled={showMoreDisabled}
+                    >
+                        Show more
+                    </Button>
+                    <Pagination
+                        count={count}
+                        page={page}
+                        onChange={onPaginationChange}
+                        size="large"
+                    />
+                </>
             }
-            <Button
-                variant="contained"
-                color="secondary"
-                style={{ marginTop: '1rem' }}
-                onClick={downloadMore}
-                disabled={showMoreDisabled}
-            >
-                Show more
-            </Button>
-            <Pagination
-                count={count}
-                page={page}
-                onChange={onPaginationChange}
-                size="large"
-            />
         </div>
     )
 }

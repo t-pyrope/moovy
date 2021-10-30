@@ -7,6 +7,7 @@ import addRating from '../actions/ratingAction';
 
 import { Rating } from '@material-ui/lab';
 import { Button } from '@material-ui/core';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import noPoster from '../assets/img/no-poster.png';
 
@@ -42,7 +43,14 @@ const MovieDetails = () => {
     return(
         <>{!isLoading ?
             <>
-                <Button onClick={() => history.goBack()}>Go back</Button>
+                <Button
+                    onClick={() => history.goBack()}
+                    color="primary"
+                >
+                    <ArrowBackIosRoundedIcon />
+                    {' '}
+                    Go back
+                </Button>
                 <div className="container_flex">
                     <img
                         src={posterUrl === "N/A" ? noPoster : posterUrl}

@@ -81,17 +81,17 @@ const RatedMoviesPage = () => {
         setPage(p);
     }
 
-    const onChipClick = (genre) => {
-        let set = new Set(activeGenres);
-        set.has(genre) ? set.delete(genre) : set.add(genre);
-        setActiveGenres(Array.from(set));
-        setPage(1);
-    }
-
-    const onRatingChipClick = (rating) => {
-        let set = new Set(activeRatings);
-        set.has(rating) ? set.delete(rating) : set.add(rating);
-        setActiveRatings(Array.from(set));
+    const onChipClick = (chipValue) => {
+        // check if rating (number) or genre (string) was chosen
+        let set = isFinite(chipValue)
+            ? new Set(activeRatings)
+            : new Set(activeGenres);
+        set.has(chipValue) ? set.delete(chipValue) : set.add(chipValue);
+        if (isFinite(chipValue)) {
+            setActiveRatings(Array.from(set));
+        } else {
+            setActiveGenres(Array.from(set));
+        }
         setPage(1);
     }
 
@@ -115,7 +115,6 @@ const RatedMoviesPage = () => {
                             onPaginationChange={onPaginationChange}
                             ratings={ratings}
                             activeRatings={activeRatings}
-                            onRatingChipClick={onRatingChipClick}
                             page={page}
                             downloadMore={downloadMore}
                             showMoreDisabled={isDisabled}

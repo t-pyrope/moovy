@@ -10,8 +10,7 @@ const MoviesContainer = ({
     movies, count, page,
     genres, activeGenres,
     onChipClick, onPaginationChange,
-    ratings, activeRatings,
-    onRatingChipClick, isLoading,
+    ratings, activeRatings, isLoading,
     downloadMore, showMoreDisabled,
 }) => {
 
@@ -30,7 +29,7 @@ const MoviesContainer = ({
                     <FilterPanel
                         items={ratings}
                         activeItems={activeRatings}
-                        onChipClick={onRatingChipClick}
+                        onChipClick={onChipClick}
                         color="default"
                     />
             }
